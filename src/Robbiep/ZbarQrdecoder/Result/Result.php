@@ -35,7 +35,6 @@ class Result {
      */
     function __construct($result) {
         $this->text($result);
-        $this->code = 200;
     }
 
     /**
@@ -50,6 +49,9 @@ class Result {
                 $prefix = str_replace('/', '\/',  $prefix);
                 $this->text = preg_replace("/^{$prefix}/i", '', $text);
             }
+        }
+        if($this->format) {
+            $this->code = 200;
         }
     }
 
