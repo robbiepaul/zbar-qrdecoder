@@ -1,6 +1,5 @@
 <?php
 
-
 use RobbieP\ZbarQrdecoder\Result\ErrorResult;
 
 class ErrorResultTest extends PHPUnit_Framework_TestCase {

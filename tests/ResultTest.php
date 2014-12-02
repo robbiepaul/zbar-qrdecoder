@@ -18,6 +18,13 @@ class ResultTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(Result::FORMAT_QR_CODE, $this->result->format);
         $this->assertEquals(200, $this->result->code);
         $this->assertEquals("http://robbiepaul.co", $this->result->text);
+        $this->assertEquals("http://robbiepaul.co", $this->result);
+    }
+
+    public function testQRbarcodeNoResult()
+    {
+        $this->result = new Result("");
+        $this->assertEquals("No result", $this->result);
     }
 
     public function testEANbarcodeResult()

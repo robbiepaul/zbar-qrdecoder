@@ -142,17 +142,4 @@ class ZbarDecoder {
         return $this->result;
     }
 
-
-    /**
-     * If the user tries to echo out the result they will just get the raw text
-     * @return string
-     */
-    public function __toString()
-    {
-        if($this->result && $this->result->text) {
-            return $this->result->text;
-        }
-        return 'No result';
-    }
-
 } 
