@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: robbie
- * Date: 01/12/14
- * Time: 23:04
- */
+require_once(__DIR__.'/../vendor/autoload.php');
 
 class ZbarDecoderTest extends PHPUnit_Framework_TestCase {
 

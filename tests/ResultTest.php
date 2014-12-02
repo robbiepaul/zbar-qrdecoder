@@ -1,5 +1,7 @@
 <?php
 
+require_once(__DIR__.'/../vendor/autoload.php');
+
 use RobbieP\ZbarQrdecoder\Result\Result;
 
 class ResultTest extends PHPUnit_Framework_TestCase {
