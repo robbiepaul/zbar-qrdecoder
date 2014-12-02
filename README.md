@@ -5,6 +5,7 @@
 
 
 This is a PHP wrapper for `zbar-tools` - (only `zbarimg` at the moment). See [http://zbar.sourceforge.net/](http://zbar.sourceforge.net/).
+[![Build Status](https://travis-ci.org/robbiepaul/zbar-qrdecoder.svg?branch=master)](https://travis-ci.org/robbiepaul/zbar-qrdecoder)
 
 
 ## Requirements 
