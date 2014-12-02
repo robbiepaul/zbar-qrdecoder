@@ -1,6 +1,8 @@
 {
     "name": "robbiep/zbar-qrdecoder",
-    "description": "Wrapper for Zbar QR decoder",
+    "description": "A PHP wrapper for Zbar. Decodes images/photos containing QR codes.",
+    "keywords": ["zbar","qr","qrcode","decode","php","laravel"],
+    "license": "MIT",
     "authors": [
         {
             "name": "Robbie Paul",
