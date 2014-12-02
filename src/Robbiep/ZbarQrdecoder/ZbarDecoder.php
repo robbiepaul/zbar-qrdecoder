@@ -155,5 +155,4 @@ class ZbarDecoder {
         return 'No result';
     }
 
-
 } 
