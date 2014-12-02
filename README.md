@@ -8,7 +8,7 @@ This is a PHP wrapper for `zbar-tools` - (only `zbarimg` at the moment). See [ht
 
 
 ## Requirements 
-* __zbar-tools__ - To install on Ubuntu it's as easy as `sudo apt-get install zbar-tools`. See their [http://zbar.sourceforge.net/](project page) for more platforms.
+* __zbar-tools__ - To install on Ubuntu it's as easy as `sudo apt-get install zbar-tools`. See their [project page](http://zbar.sourceforge.net/) for more platforms.
 * __ImageMagick__ - It's required by Zbar, I'm not sure if they bundle it or not so make sure you have it
 
  
