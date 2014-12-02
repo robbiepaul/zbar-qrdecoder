@@ -1,7 +1,4 @@
 <?php
-require_once(__DIR__.'/../vendor/autoload.php');
-
-use RobbieP\ZbarQrdecoder\Result\ErrorResult;
 
 class ErrorResultTest extends PHPUnit_Framework_TestCase {
 
@@ -14,8 +11,8 @@ class ErrorResultTest extends PHPUnit_Framework_TestCase {
 
     public function testErrorResult()
     {
-        $this->result = new ErrorResult("No barcode was found");
-        $this->assertEquals(ErrorResult::NOT_FOUND, $this->result->format);
+        $this->result = new  \RobbieP\ZbarQrdecoder\Result\ErrorResult("No barcode was found");
+        $this->assertEquals(\RobbieP\ZbarQrdecoder\Result\ErrorResult::NOT_FOUND, $this->result->format);
         $this->assertEquals(400, $this->result->code);
         $this->assertEquals("No barcode was found", $this->result->text);
     }

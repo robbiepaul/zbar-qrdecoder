@@ -1,5 +1,4 @@
 <?php
-require_once(__DIR__.'/../vendor/autoload.php');
 
 class ZbarDecoderTest extends PHPUnit_Framework_TestCase {
 
@@ -236,7 +235,6 @@ class ZbarDecoderTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('NOT_FOUND', $result->format);
         $this->assertEquals('No barcode detected', $result->text);
     }
-
-
+    
 }
  
