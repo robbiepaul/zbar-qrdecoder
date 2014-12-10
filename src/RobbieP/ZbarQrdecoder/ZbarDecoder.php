@@ -117,17 +117,14 @@ class ZbarDecoder {
         } catch (ProcessFailedException $e) {
            switch($e->getProcess()->getExitCode()) {
                case 1:
-                   throw new \Exception('Bad arguments');
-                   break;
+                   throw new \Exception('An error occurred while processing the image. It could be bad arguments, I/O errors and image handling errors from ImageMagick');
                case 2:
                    throw new \Exception('ImageMagick fatal error');
-                   break;
                case 4:
                    $this->result = new ErrorResult('No barcode detected');
                    break;
                default:
-                   throw new \Exception('Problem with decode');
-                   break;
+                   throw new \Exception('Problem with decode - check you have zbar-tools installed');
            }
         }
 
