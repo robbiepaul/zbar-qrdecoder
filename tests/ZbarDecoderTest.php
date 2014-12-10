@@ -78,7 +78,7 @@ class ZbarDecoderTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @expectedException Exception
-     * @expectedExceptionMessage Bad arguments
+     * @expectedExceptionMessage An error occurred while processing the image. It could be bad arguments, I/O errors and image handling errors from ImageMagick
      */
     public function testRunProcessThrowsErrorBadArgs()
     {
@@ -158,7 +158,7 @@ class ZbarDecoderTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @expectedException Exception
-     * @expectedExceptionMessage Problem with decode
+     * @expectedExceptionMessage Problem with decode - check you have zbar-tools installed
      */
     public function testRunProcessThrowsErrorProblemWithCode()
     {
