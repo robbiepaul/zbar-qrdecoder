@@ -64,7 +64,7 @@ class Result {
      */
     public function format($format)
     {
-        $this->format = @array_search($format, static::$prefix);
+        $this->format = @array_search($format, self::$prefix);
         if($this->format) {
             $this->code = 200;
         }
