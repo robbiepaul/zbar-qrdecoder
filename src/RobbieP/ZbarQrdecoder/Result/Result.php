@@ -9,6 +9,8 @@
 namespace RobbieP\ZbarQrdecoder\Result;
 
 
+use RobbieP\ZbarQrdecoder\Result\Parser\ParserXML;
+
 class Result {
 
     const FORMAT_QR_CODE            = 'QR_CODE';
@@ -21,20 +23,30 @@ class Result {
     public  $text;
     public  $format;
 
-    private static  $prefix = [
-        self::FORMAT_QR_CODE            => "QR-Code:",
-        self::FORMAT_EAN_13             => "EAN-13:",
-        self::FORMAT_CODE_39            => "CODE-39:",
-        self::FORMAT_CODE_128           => "CODE-128:",
-        self::FORMAT_INTERLEAVED_2_5    => "I2/5:",
+    private static $prefix = [
+        self::FORMAT_QR_CODE            => "QR-Code",
+        self::FORMAT_EAN_13             => "EAN-13",
+        self::FORMAT_CODE_39            => "CODE-39",
+        self::FORMAT_CODE_128           => "CODE-128",
+        self::FORMAT_INTERLEAVED_2_5    => "I2/5",
     ];
+
+    protected $parser;
 
     /**
      * Pass in the raw result from the process
      * @param $result
+     * @param $parser
      */
-    function __construct($result) {
-        $this->text($result);
+    function __construct($result, $parser = null) {
+        $this->parser = !is_null($parser) ? $parser : new ParserXML();
+        if(!empty($result))
+        {
+            $parsed = $this->parser->parse($result);
+            // TODO: Tidy/Refactor this bit of code
+            $this->text($parsed['text']);
+            $this->format($parsed['format']);
+        }
     }
 
     /**
@@ -43,16 +55,7 @@ class Result {
      */
     public function text($text)
     {
-        foreach(self::$prefix as $k => $prefix) {
-            if (stripos(trim($text), $prefix) === 0) {
-                $this->format($k);
-                $prefix = str_replace('/', '\/',  $prefix);
-                $this->text = preg_replace("/^{$prefix}/i", '', $text);
-            }
-        }
-        if($this->format) {
-            $this->code = 200;
-        }
+        $this->text = $text;
     }
 
     /**
@@ -61,7 +64,10 @@ class Result {
      */
     public function format($format)
     {
-        $this->format = $format;
+        $this->format = @array_search($format, static::$prefix);
+        if($this->format) {
+            $this->code = 200;
+        }
     }
 
     /**

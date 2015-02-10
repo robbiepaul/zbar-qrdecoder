@@ -101,7 +101,7 @@ class ZbarDecoder {
     {
         $path = $this->getPath();
         $this->processBuilder->setPrefix($path . DIRECTORY_SEPARATOR . static::EXECUTABLE);
-        $this->processBuilder->setArguments(array('-D', $this->getFilepath()))->enableOutput();
+        $this->processBuilder->setArguments(array('-D', '--xml', '-q', $this->getFilepath()))->enableOutput();
     }
 
     /**
@@ -115,17 +115,17 @@ class ZbarDecoder {
             $process->mustRun();
             $this->result = new Result($process->getOutput());
         } catch (ProcessFailedException $e) {
-           switch($e->getProcess()->getExitCode()) {
-               case 1:
-                   throw new \Exception('An error occurred while processing the image. It could be bad arguments, I/O errors and image handling errors from ImageMagick');
-               case 2:
-                   throw new \Exception('ImageMagick fatal error');
-               case 4:
-                   $this->result = new ErrorResult('No barcode detected');
-                   break;
-               default:
-                   throw new \Exception('Problem with decode - check you have zbar-tools installed');
-           }
+            switch($e->getProcess()->getExitCode()) {
+                case 1:
+                    throw new \Exception('An error occurred while processing the image. It could be bad arguments, I/O errors and image handling errors from ImageMagick');
+                case 2:
+                    throw new \Exception('ImageMagick fatal error');
+                case 4:
+                    $this->result = new ErrorResult('No barcode detected');
+                    break;
+                default:
+                    throw new \Exception('Problem with decode - check you have zbar-tools installed');
+            }
         }
 
     }
