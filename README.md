@@ -56,7 +56,7 @@ I've included a ServiceProvider class and a config if you need to change any opt
 ```
 
 You may need to publish the config `php artisan config:publish robbiep/zbar-qrdecoder`
-> Laravel 5 requires slightly different syntax for publishing configs, use `php artisan publish:config robbiep/zbar-qrdecoder`
+> Laravel 5 requires slightly different syntax for publishing configs, use `php artisan vendor:publish`
 
 Now you can use Zbar QR Decoder in your Laravel application!
 

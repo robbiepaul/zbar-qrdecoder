@@ -1,8 +1,7 @@
 <?php namespace RobbieP\ZbarQrdecoder;
 
-use Illuminate\Foundation\AliasLoader;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
-use Symfony\Component\Process\ProcessBuilder;
 
 class ZbarQrdecoderServiceProvider extends ServiceProvider {
 
@@ -14,14 +13,33 @@ class ZbarQrdecoderServiceProvider extends ServiceProvider {
 	protected $defer = false;
 
 	/**
+	 * Actual provider
+	 *
+	 * @var \Illuminate\Support\ServiceProvider
+	 */
+	protected $provider;        
+
+	/**
+	 * Create a new service provider instance.
+	 *
+	 * @param  \Illuminate\Contracts\Foundation\Application  $app
+	 * @return void
+	 */
+	public function __construct($app)
+	{
+		parent::__construct($app);
+
+		$this->provider = $this->getProvider();
+	}
+
+	/**
 	 * Bootstrap the application events.
 	 *
 	 * @return void
 	 */
 	public function boot()
 	{
-
-		$this->package('robbiep/zbar-qrdecoder');
+                $this->provider->boot();
 	}
 
 	/**
@@ -31,18 +49,7 @@ class ZbarQrdecoderServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app['zbardecoder'] = $this->app->share(function($app)
-		{
-			$processBuilder = new ProcessBuilder();
-			$config = $app['config']->get('zbar-qrdecoder::config');
-			return new ZbarDecoder($config, $processBuilder);
-		});
-
-		$this->app->booting(function()
-		{
-			$loader = AliasLoader::getInstance();
-			$loader->alias('ZbarDecoder', 'RobbieP\ZbarQrdecoder\Facades\ZbarDecoder');
-		});
+                $this->provider->register();
 	}
 
 	/**
@@ -53,6 +60,22 @@ class ZbarQrdecoderServiceProvider extends ServiceProvider {
 	public function provides()
 	{
 		return array('zbardecoder');
+	}
+
+	/**
+	 * Return ServiceProvider according to Laravel version
+	 *
+	 * @return \Illuminate\Support\ServiceProvider
+	 */
+	private function getProvider()
+	{
+		$provider = '\RobbieP\ZbarQrdecoder\ZbarQrdecoderServiceProviderLaravel5';
+
+		if (version_compare(Application::VERSION, '5.0', '<')) {
+		    $provider = '\RobbieP\ZbarQrdecoder\ZbarQrdecoderServiceProviderLaravel4';
+		}
+
+		return new $provider($this->app);
 	}
 
 }
