@@ -2,10 +2,10 @@
 
 
 # ZBar QR code decoder for PHP
-
+[![Build Status](https://travis-ci.org/robbiepaul/zbar-qrdecoder.svg?branch=master)](https://travis-ci.org/robbiepaul/zbar-qrdecoder) [![Latest Stable Version](https://poser.pugx.org/robbiep/zbar-qrdecoder/v/stable)](https://packagist.org/packages/robbiep/zbar-qrdecoder) [![Total Downloads](https://poser.pugx.org/robbiep/zbar-qrdecoder/downloads)](https://packagist.org/packages/robbiep/zbar-qrdecoder) [![Latest Unstable Version](https://poser.pugx.org/robbiep/zbar-qrdecoder/v/unstable)](https://packagist.org/packages/robbiep/zbar-qrdecoder) [![License](https://poser.pugx.org/robbiep/zbar-qrdecoder/license)](https://packagist.org/packages/robbiep/zbar-qrdecoder)
 
 This is a PHP wrapper for `zbar-tools` - (only `zbarimg` at the moment). See [http://zbar.sourceforge.net/](http://zbar.sourceforge.net/).
-[![Build Status](https://travis-ci.org/robbiepaul/zbar-qrdecoder.svg?branch=master)](https://travis-ci.org/robbiepaul/zbar-qrdecoder)
+
 
 
 ## Requirements 
@@ -55,8 +55,7 @@ I've included a ServiceProvider class and a config if you need to change any opt
 )
 ```
 
-You may need to publish the config `php artisan config:publish robbiep/zbar-qrdecoder`
-> Laravel 5 requires slightly different syntax for publishing configs, use `php artisan vendor:publish`
+You may need to publish the config `php artisan vendor:publish`
 
 Now you can use Zbar QR Decoder in your Laravel application!
 
