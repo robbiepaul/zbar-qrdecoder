@@ -21,7 +21,7 @@ Add this to your `composer.json` dependencies:
 
 ```js
 "require": {
-   "robbiep/zbar-qrdecoder": "~1.3"
+   "robbiep/zbar-qrdecoder": "^2.0"
 }
 ```
 
