@@ -25,7 +25,8 @@ class ZbarQrdecoderServiceProviderLaravel5 extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app['zbardecoder'] = $this->app->share(function($app)
+		//$this->app['zbardecoder'] = $this->app->share(function($app)
+		$this->app->singleton('zbardecoder' ,function($app)
 		{
 			$processBuilder = new ProcessBuilder();
 			$config = $app['config']->get('zbar-qrdecoder::config');
