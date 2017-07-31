@@ -6,6 +6,7 @@ use RobbieP\ZbarQrdecoder\Result\AbstractResult;
 use RobbieP\ZbarQrdecoder\Result\ErrorResult;
 use RobbieP\ZbarQrdecoder\Result\Parser\ParserXML;
 use RobbieP\ZbarQrdecoder\Result\Result;
+use RobbieP\ZbarQrdecoder\Result\ResultCollection;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\ProcessBuilder;
 
@@ -17,7 +18,7 @@ class ZbarDecoder
     private $filePath;
 
     /**
-     * @var AbstractResult
+     * @var AbstractResult|ResultCollection
      */
     private $result;
     /**
@@ -75,7 +76,7 @@ class ZbarDecoder
      */
     public function setPath($path)
     {
-        $this->path = rtrim($path, DIRECTORY_SEPARATOR);
+        $this->path = rtrim($path, '/');
     }
 
     /**
@@ -122,7 +123,8 @@ class ZbarDecoder
         $process = $this->processBuilder->getProcess();
         try {
             $process->mustRun();
-            $this->result = new Result($process->getOutput(), new ParserXML());
+            $parser       = new ParserXML();
+            $this->result = $parser->parse($process->getOutput());
         } catch (ProcessFailedException $e) {
             switch ($e->getProcess()->getExitCode()) {
                 case 1:
@@ -142,7 +144,7 @@ class ZbarDecoder
     /**
      * Only return the output class to the end user
      *
-     * @return AbstractResult
+     * @return AbstractResult|ResultCollection
      */
     private function output()
     {

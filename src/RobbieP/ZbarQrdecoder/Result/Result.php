@@ -29,17 +29,14 @@ class Result extends AbstractResult
     /**
      * Pass in the raw result from the process
      *
-     * @param string          $result
-     * @param ParserInterface $parser
+     * @param string $text
+     * @param string $format
      */
-    public function __construct($result, ParserInterface $parser)
+    public function __construct($text, $format)
     {
-        if (!empty($result)) {
-            $parsed = $parser->parse($result);
-            // TODO: Tidy/Refactor this bit of code
-            $this->text($parsed['text']);
-            $this->format($parsed['format']);
-        }
+        // TODO: Tidy/Refactor this bit of code
+        $this->text($text);
+        $this->format($format);
     }
 
     /**
