@@ -43,7 +43,7 @@ class ZbarDecoder
      *
      * @param $filename
      *
-     * @return AbstractResult
+     * @return AbstractResult|ResultCollection
      * @throws \Exception
      */
     public function make($filename)
