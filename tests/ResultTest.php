@@ -1,9 +1,11 @@
 <?php
 
-class ResultTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+use RobbieP\ZbarQrdecoder\Result\Parser\ParserXML;
 
+class ResultTest extends TestCase
+{
     private $result;
-
 
     public function tearDown()
     {
@@ -18,17 +20,17 @@ class ResultTest extends PHPUnit_Framework_TestCase {
 <symbol type='QR-Code' quality='1'><data><![CDATA[http://robbiepaul.co]]></data></symbol>
 </index>
 </source>
-</barcodes>");
-        $this->assertEquals(\RobbieP\ZbarQrdecoder\Result\Result::FORMAT_QR_CODE, $this->result->format);
-        $this->assertEquals(200, $this->result->code);
-        $this->assertEquals("http://robbiepaul.co", $this->result->text);
-        $this->assertEquals("http://robbiepaul.co", $this->result);
+</barcodes>", new ParserXML());
+        $this->assertEquals(\RobbieP\ZbarQrdecoder\Result\Result::FORMAT_QR_CODE, $this->result->getFormat());
+        $this->assertTrue($this->result->hasResult());
+        $this->assertEquals('http://robbiepaul.co', $this->result->getText());
+        $this->assertEquals('http://robbiepaul.co', $this->result);
     }
 
     public function testQRbarcodeNoResult()
     {
-        $this->result = new \RobbieP\ZbarQrdecoder\Result\Result("");
-        $this->assertEquals("No result", $this->result);
+        $this->result = new \RobbieP\ZbarQrdecoder\Result\Result('', new ParserXML());
+        $this->assertEquals('No result', $this->result);
     }
 
     public function testEANbarcodeResult()
@@ -39,10 +41,10 @@ class ResultTest extends PHPUnit_Framework_TestCase {
 <symbol type='EAN-13' quality='1'><data><![CDATA[1234567890123]]></data></symbol>
 </index>
 </source>
-</barcodes>");
-        $this->assertEquals(\RobbieP\ZbarQrdecoder\Result\Result::FORMAT_EAN_13, $this->result->format);
-        $this->assertEquals(200, $this->result->code);
-        $this->assertEquals("1234567890123", $this->result->text);
+</barcodes>", new ParserXML());
+        $this->assertEquals(\RobbieP\ZbarQrdecoder\Result\Result::FORMAT_EAN_13, $this->result->getFormat());
+        $this->assertTrue($this->result->hasResult());
+        $this->assertEquals('1234567890123', $this->result->getText());
     }
 
     public function testCODE39barcodeResult()
@@ -53,11 +55,9 @@ class ResultTest extends PHPUnit_Framework_TestCase {
 <symbol type='CODE-39' quality='1'><data><![CDATA[1234567890123]]></data></symbol>
 </index>
 </source>
-</barcodes>");
-        $this->assertEquals(\RobbieP\ZbarQrdecoder\Result\Result::FORMAT_CODE_39, $this->result->format);
-        $this->assertEquals(200, $this->result->code);
-        $this->assertEquals("1234567890123", $this->result->text);
+</barcodes>", new ParserXML());
+        $this->assertEquals(\RobbieP\ZbarQrdecoder\Result\Result::FORMAT_CODE_39, $this->result->getFormat());
+        $this->assertTrue($this->result->hasResult());
+        $this->assertEquals('1234567890123', $this->result->getText());
     }
-
 }
- 
