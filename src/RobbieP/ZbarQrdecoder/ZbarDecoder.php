@@ -123,8 +123,12 @@ class ZbarDecoder
         $process = $this->processBuilder->getProcess();
         try {
             $process->mustRun();
-            $parser       = new ParserXML();
-            $this->result = $parser->parse($process->getOutput());
+            $parser = new ParserXML();
+            $result = $parser->parse($process->getOutput());
+            if (count($result) === 1) {
+                $result = $result->getResults()[0];
+            }
+            $this->result = $result;
         } catch (ProcessFailedException $e) {
             switch ($e->getProcess()->getExitCode()) {
                 case 1:
