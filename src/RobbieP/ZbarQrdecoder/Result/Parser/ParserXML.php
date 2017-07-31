@@ -2,19 +2,29 @@
 
 namespace RobbieP\ZbarQrdecoder\Result\Parser;
 
-class ParserXML implements ParserInterface {
+use RobbieP\ZbarQrdecoder\Result\Result;
+use RobbieP\ZbarQrdecoder\Result\ResultCollection;
 
-	/**
-	 * @param $resultString
-	 * @return array
-	 */
-	public function parse($resultString)
-	{
-		$parsed = [];
-		$xml = simplexml_load_string($resultString, null, LIBXML_NOCDATA);
-		$parsed['text'] = (string) $xml->source->index->symbol[0]->data;
-		$parsed['format'] = (string) $xml->source->index->symbol[0]['type'];
-		return $parsed;
-	}
+class ParserXML implements ParserInterface
+{
+    /**
+     * @param $resultString
+     *
+     * @return ResultCollection
+     */
+    public function parse($resultString)
+    {
+        $result = new ResultCollection();
+        $xml    = simplexml_load_string($resultString, null, LIBXML_NOCDATA);
+        if ($xml) {
+            foreach ($xml->source->index->symbol as $item) {
+                /** @var \SimpleXMLElement $item */
+                $text   = (string)$item->data;
+                $format = (string)$item->attributes()->type;
+                $result->addResult(new Result($text, $format));
+            }
+        }
 
+        return $result;
+    }
 }

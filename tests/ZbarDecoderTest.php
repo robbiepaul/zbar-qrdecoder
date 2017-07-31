@@ -1,7 +1,12 @@
 <?php
 
-class ZbarDecoderTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
 
+class ZbarDecoderTest extends TestCase {
+
+    /**
+     * @var \RobbieP\ZbarQrdecoder\ZbarDecoder
+     */
     protected $ZbarDecoder;
     protected $processBuilder;
 
@@ -231,10 +236,8 @@ class ZbarDecoderTest extends PHPUnit_Framework_TestCase {
         $result = $this->ZbarDecoder->make(__DIR__.'/stubs/tc.jpg');
         $this->assertEquals(__DIR__.'/stubs/tc.jpg', $this->ZbarDecoder->getFilePath());
         $this->assertInstanceOf('RobbieP\ZbarQrdecoder\Result\ErrorResult', $result);
-        $this->assertEquals(400, $result->code);
-        $this->assertEquals('NOT_FOUND', $result->format);
-        $this->assertEquals('No barcode detected', $result->text);
+        $this->assertFalse($result->hasResult());
+        $this->assertEquals('NOT_FOUND', $result->getFormat());
+        $this->assertEquals('No barcode detected', $result->getText());
     }
-    
 }
- 
