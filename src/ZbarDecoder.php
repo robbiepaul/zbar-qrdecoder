@@ -5,7 +5,6 @@ namespace RobbieP\ZbarQrdecoder;
 use RobbieP\ZbarQrdecoder\Result\AbstractResult;
 use RobbieP\ZbarQrdecoder\Result\ErrorResult;
 use RobbieP\ZbarQrdecoder\Result\Parser\ParserXML;
-use RobbieP\ZbarQrdecoder\Result\Result;
 use RobbieP\ZbarQrdecoder\Result\ResultCollection;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\ProcessBuilder;
