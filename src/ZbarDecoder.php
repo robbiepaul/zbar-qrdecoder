@@ -115,7 +115,7 @@ class ZbarDecoder
     /**
      * Runs the process
      *
-     * @throws \Exception
+     * @throws \RuntimeException
      */
     private function runProcess()
     {
@@ -124,7 +124,7 @@ class ZbarDecoder
             $process->mustRun();
             $parser = new ParserXML();
             $result = $parser->parse(preg_replace_callback(
-                '/<data><\!\[CDATA\[(.*?)\]\]><\/data>/',
+                '/<data><\!\[CDATA\[(.*?)\]\]><\/data>/s',
                 function ($matches) {
                     return '<data><![CDATA[' . base64_encode($matches[1]) . ']]></data>';
                 },
