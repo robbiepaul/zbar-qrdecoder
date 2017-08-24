@@ -123,13 +123,7 @@ class ZbarDecoder
         try {
             $process->mustRun();
             $parser = new ParserXML();
-            $result = $parser->parse(preg_replace_callback(
-                '/<data><\!\[CDATA\[(.*?)\]\]><\/data>/s',
-                function ($matches) {
-                    return '<data><![CDATA[' . base64_encode($matches[1]) . ']]></data>';
-                },
-                $process->getOutput()
-            ));
+            $result = $parser->parse($process->getOutput());
             if (count($result) === 1) {
                 $result = $result->getResults()[0];
             }
