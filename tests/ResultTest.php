@@ -5,13 +5,6 @@ use RobbieP\ZbarQrdecoder\Result\Parser\ParserXML;
 
 class ResultTest extends TestCase
 {
-    private $result;
-
-    public function tearDown()
-    {
-        $result = null;
-    }
-
     public function testQRbarcodeResult()
     {
         $result = (new ParserXML())->parse("<barcodes xmlns='http://zbar.sourceforge.net/2008/barcode'>
