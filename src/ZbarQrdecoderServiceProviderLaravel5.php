@@ -14,7 +14,7 @@ class ZbarQrdecoderServiceProviderLaravel5 extends ServiceProvider {
 	public function boot()
 	{
                 $this->publishes([
-			__DIR__ . '/../../config/config.php' => config_path('zbar-qrdecoder.php'),
+					__DIR__ . '/../../config/config.php' => config_path('zbar-qrdecoder.php'),
 		]);
 	}
 
@@ -25,7 +25,8 @@ class ZbarQrdecoderServiceProviderLaravel5 extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app['zbardecoder'] = $this->app->share(function($app)
+		//$this->app['zbardecoder'] = $this->app->share(function($app)
+		$this->app->singleton('zbardecoder' ,function($app)
 		{
 			$processBuilder = new ProcessBuilder();
 			$config = $app['config']->get('zbar-qrdecoder::config');
