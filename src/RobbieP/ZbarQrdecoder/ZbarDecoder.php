@@ -5,7 +5,7 @@ namespace RobbieP\ZbarQrdecoder;
 use RobbieP\ZbarQrdecoder\Result\ErrorResult;
 use RobbieP\ZbarQrdecoder\Result\Result;
 use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\ProcessBuilder;
+use Symfony\Component\Process\Process;
 
 class ZbarDecoder {
 
@@ -33,7 +33,7 @@ class ZbarDecoder {
         if(isset($this->config['path'])) {
             $this->setPath($this->config['path']);
         }
-        $this->processBuilder =  is_null($processBuilder) ? new ProcessBuilder() : $processBuilder;
+        $this->processBuilder =  is_null($processBuilder) ? new Process() : $processBuilder;
     }
 
     /**
