@@ -101,7 +101,7 @@ class ZbarDecoder {
     {
         $path = $this->getPath();
 
-        $this->processBuilder = new Process(array('-D', '--xml', '-q', $this->getFilepath()), $path . DIRECTORY_SEPARATOR . static::EXECUTABLE);
+        $this->processBuilder = new Process(array('-D', '--xml', '-q'), $this->getFilepath()); //$path . DIRECTORY_SEPARATOR . static::EXECUTABLE);
 
         //$this->processBuilder->setPrefix($path . DIRECTORY_SEPARATOR . static::EXECUTABLE);
         //$this->processBuilder->setArguments(array('-D', '--xml', '-q', $this->getFilepath()))->enableOutput();
