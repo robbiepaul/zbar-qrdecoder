@@ -2,10 +2,12 @@
 
 namespace RobbieP\ZbarQrdecoder;
 
-use RobbieP\ZbarQrdecoder\Result\ErrorResult;
+die("Hej");
+
+/*use RobbieP\ZbarQrdecoder\Result\ErrorResult;
 use RobbieP\ZbarQrdecoder\Result\Result;
 use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\ProcessBuilder;
+use Symfony\Component\Process\ProcessBuilder;*/
 
 class ZbarDecoder {
 
