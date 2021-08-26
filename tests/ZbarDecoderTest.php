@@ -1,18 +1,25 @@
 <?php
 
-class ZbarDecoderTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
 
+class ZbarDecoderTest extends TestCase
+{
+
+    /**
+     * @var \RobbieP\ZbarQrdecoder\ZbarDecoder
+     */
     protected $ZbarDecoder;
     protected $processBuilder;
 
     public function setUp()
     {
-        $this->processBuilder = Mockery::mock('\Symfony\Component\Process\ProcessBuilder');
+        $this->processBuilder = $this->getMockBuilder(\Symfony\Component\Process\Process::class)->disableOriginalConstructor()->getMock();
         $this->ZbarDecoder = new \RobbieP\ZbarQrdecoder\ZbarDecoder([], $this->processBuilder);
     }
 
     public function tearDown()
     {
+        $this->processBuilder = null;
         $this->ZbarDecoder = null;
     }
 
@@ -33,13 +40,13 @@ class ZbarDecoderTest extends PHPUnit_Framework_TestCase {
 
     public function testSetFilePathWorks()
     {
-        $this->ZbarDecoder->setFilePath(__DIR__.'/stubs/tc.jpg');
-        $this->assertEquals(__DIR__.'/stubs/tc.jpg', $this->ZbarDecoder->getFilePath());
+        $this->ZbarDecoder->setFilePath(__DIR__ . '/stubs/tc.jpg');
+        $this->assertEquals(__DIR__ . '/stubs/tc.jpg', $this->ZbarDecoder->getFilePath());
     }
 
     public function testConfigWorksIfPassedAsArrayInConstructor()
     {
-        $ZbarDecoder = new \RobbieP\ZbarQrdecoder\ZbarDecoder(['path'=>'/new/bin/']);
+        $ZbarDecoder = new \RobbieP\ZbarQrdecoder\ZbarDecoder(['path' => '/new/bin/']);
         $this->assertEquals('/new/bin', $ZbarDecoder->getPath());
     }
 
@@ -51,29 +58,23 @@ class ZbarDecoderTest extends PHPUnit_Framework_TestCase {
 
     public function testMakeWorks()
     {
-        $processBuilder = $this->getMockBuilder('\Symfony\Component\Process\ProcessBuilder')->disableOriginalConstructor()->getMock();
         $process = $this->getMockBuilder('\Symfony\Component\Process\Process')->disableOriginalConstructor()->getMock();
 
         $process->expects($this->any())
             ->method('mustRun')
-            ->will($this->returnValue(true));
-
-        $processBuilder->expects($this->any())
-            ->method('setPrefix')
-            ->will($this->returnValue(true));
-        $processBuilder->expects($this->any())
-            ->method('setArguments')
             ->will($this->returnSelf());
-        $processBuilder->expects($this->any())
+        $process->expects($this->any())
+            ->method('setCommandLine')
+            ->will($this->returnSelf());
+        $process->expects($this->any())
             ->method('enableOutput')
-            ->will($this->returnValue(true));
-        $processBuilder->expects($this->any())
-            ->method('getProcess')
-            ->will($this->returnValue($process));
+            ->will($this->returnSelf());
 
-        $this->ZbarDecoder = new \RobbieP\ZbarQrdecoder\ZbarDecoder([], $processBuilder);
-        $this->ZbarDecoder->make(__DIR__.'/stubs/tc.jpg');
-        $this->assertEquals(__DIR__.'/stubs/tc.jpg', $this->ZbarDecoder->getFilePath());
+        $this->ZbarDecoder = new \RobbieP\ZbarQrdecoder\ZbarDecoder([], $process);
+        $this->ZbarDecoder->make(__DIR__ . '/stubs/tc.jpg');
+        $this->assertEquals(__DIR__ . '/stubs/tc.jpg', $this->ZbarDecoder->getFilePath());
+
+        unset($process);
     }
 
     /**
@@ -82,13 +83,8 @@ class ZbarDecoderTest extends PHPUnit_Framework_TestCase {
      */
     public function testRunProcessThrowsErrorBadArgs()
     {
-        $processBuilder = $this->getMockBuilder('\Symfony\Component\Process\ProcessBuilder')->disableOriginalConstructor()->getMock();
         $process = $this->getMockBuilder('\Symfony\Component\Process\Process')->disableOriginalConstructor()->getMock();
         $exception = $this->getMockBuilder('\Symfony\Component\Process\Exception\ProcessFailedException')->disableOriginalConstructor()->getMock();
-
-        $processBuilder->expects($this->any())
-            ->method('getProcess')
-            ->will($this->returnValue($process));
 
         $exception->expects($this->any())
             ->method('getProcess')
@@ -101,19 +97,18 @@ class ZbarDecoderTest extends PHPUnit_Framework_TestCase {
         $process->expects($this->any())
             ->method('getExitCode')
             ->will($this->returnValue(1));
-        $processBuilder->expects($this->any())
-            ->method('setPrefix')
-            ->will($this->returnValue(true));
-        $processBuilder->expects($this->any())
-            ->method('setArguments')
+        $process->expects($this->any())
+            ->method('setCommandLine')
             ->will($this->returnSelf());
-        $processBuilder->expects($this->any())
+        $process->expects($this->any())
             ->method('enableOutput')
-            ->will($this->returnValue(true));
+            ->will($this->returnSelf());
 
-        $this->ZbarDecoder = new \RobbieP\ZbarQrdecoder\ZbarDecoder([], $processBuilder);
-        $this->ZbarDecoder->make(__DIR__.'/stubs/tc.jpg');
-        $this->assertEquals(__DIR__.'/stubs/tc.jpg', $this->ZbarDecoder->getFilePath());
+        $this->ZbarDecoder = new \RobbieP\ZbarQrdecoder\ZbarDecoder([], $process);
+        $this->ZbarDecoder->make(__DIR__ . '/stubs/tc.jpg');
+        $this->assertEquals(__DIR__ . '/stubs/tc.jpg', $this->ZbarDecoder->getFilePath());
+
+        unset($process);
     }
 
     /**
@@ -122,13 +117,8 @@ class ZbarDecoderTest extends PHPUnit_Framework_TestCase {
      */
     public function testRunProcessThrowsErrorImageMagick()
     {
-        $processBuilder = $this->getMockBuilder('\Symfony\Component\Process\ProcessBuilder')->disableOriginalConstructor()->getMock();
         $process = $this->getMockBuilder('\Symfony\Component\Process\Process')->disableOriginalConstructor()->getMock();
         $exception = $this->getMockBuilder('\Symfony\Component\Process\Exception\ProcessFailedException')->disableOriginalConstructor()->getMock();
-
-        $processBuilder->expects($this->any())
-            ->method('getProcess')
-            ->will($this->returnValue($process));
 
         $exception->expects($this->any())
             ->method('getProcess')
@@ -141,19 +131,18 @@ class ZbarDecoderTest extends PHPUnit_Framework_TestCase {
         $process->expects($this->any())
             ->method('getExitCode')
             ->will($this->returnValue(2));
-        $processBuilder->expects($this->any())
-            ->method('setPrefix')
-            ->will($this->returnValue(true));
-        $processBuilder->expects($this->any())
-            ->method('setArguments')
+        $process->expects($this->any())
+            ->method('setCommandLine')
             ->will($this->returnSelf());
-        $processBuilder->expects($this->any())
+        $process->expects($this->any())
             ->method('enableOutput')
-            ->will($this->returnValue(true));
+            ->will($this->returnSelf());
 
-        $this->ZbarDecoder = new \RobbieP\ZbarQrdecoder\ZbarDecoder([], $processBuilder);
-        $this->ZbarDecoder->make(__DIR__.'/stubs/tc.jpg');
-        $this->assertEquals(__DIR__.'/stubs/tc.jpg', $this->ZbarDecoder->getFilePath());
+        $this->ZbarDecoder = new \RobbieP\ZbarQrdecoder\ZbarDecoder([], $process);
+        $this->ZbarDecoder->make(__DIR__ . '/stubs/tc.jpg');
+        $this->assertEquals(__DIR__ . '/stubs/tc.jpg', $this->ZbarDecoder->getFilePath());
+
+        unset($process);
     }
 
     /**
@@ -162,13 +151,8 @@ class ZbarDecoderTest extends PHPUnit_Framework_TestCase {
      */
     public function testRunProcessThrowsErrorProblemWithCode()
     {
-        $processBuilder = $this->getMockBuilder('\Symfony\Component\Process\ProcessBuilder')->disableOriginalConstructor()->getMock();
         $process = $this->getMockBuilder('\Symfony\Component\Process\Process')->disableOriginalConstructor()->getMock();
         $exception = $this->getMockBuilder('\Symfony\Component\Process\Exception\ProcessFailedException')->disableOriginalConstructor()->getMock();
-
-        $processBuilder->expects($this->any())
-            ->method('getProcess')
-            ->will($this->returnValue($process));
 
         $exception->expects($this->any())
             ->method('getProcess')
@@ -181,30 +165,24 @@ class ZbarDecoderTest extends PHPUnit_Framework_TestCase {
         $process->expects($this->any())
             ->method('getExitCode')
             ->will($this->returnValue(3));
-        $processBuilder->expects($this->any())
-            ->method('setPrefix')
-            ->will($this->returnValue(true));
-        $processBuilder->expects($this->any())
-            ->method('setArguments')
+        $process->expects($this->any())
+            ->method('setCommandLine')
             ->will($this->returnSelf());
-        $processBuilder->expects($this->any())
+        $process->expects($this->any())
             ->method('enableOutput')
-            ->will($this->returnValue(true));
+            ->will($this->returnSelf());
 
-        $this->ZbarDecoder = new \RobbieP\ZbarQrdecoder\ZbarDecoder([], $processBuilder);
-        $this->ZbarDecoder->make(__DIR__.'/stubs/tc.jpg');
-        $this->assertEquals(__DIR__.'/stubs/tc.jpg', $this->ZbarDecoder->getFilePath());
+        $this->ZbarDecoder = new \RobbieP\ZbarQrdecoder\ZbarDecoder([], $process);
+        $this->ZbarDecoder->make(__DIR__ . '/stubs/tc.jpg');
+        $this->assertEquals(__DIR__ . '/stubs/tc.jpg', $this->ZbarDecoder->getFilePath());
+
+        unset($process);
     }
 
     public function testRunProcessThrowsErrorResultWhenNoCodeDetected()
     {
-        $processBuilder = $this->getMockBuilder('\Symfony\Component\Process\ProcessBuilder')->disableOriginalConstructor()->getMock();
         $process = $this->getMockBuilder('\Symfony\Component\Process\Process')->disableOriginalConstructor()->getMock();
         $exception = $this->getMockBuilder('\Symfony\Component\Process\Exception\ProcessFailedException')->disableOriginalConstructor()->getMock();
-
-        $processBuilder->expects($this->any())
-            ->method('getProcess')
-            ->will($this->returnValue($process));
 
         $exception->expects($this->any())
             ->method('getProcess')
@@ -217,24 +195,21 @@ class ZbarDecoderTest extends PHPUnit_Framework_TestCase {
         $process->expects($this->any())
             ->method('getExitCode')
             ->will($this->returnValue(4));
-        $processBuilder->expects($this->any())
-            ->method('setPrefix')
-            ->will($this->returnValue(true));
-        $processBuilder->expects($this->any())
-            ->method('setArguments')
+        $process->expects($this->any())
+            ->method('setCommandLine')
             ->will($this->returnSelf());
-        $processBuilder->expects($this->any())
+        $process->expects($this->any())
             ->method('enableOutput')
-            ->will($this->returnValue(true));
+            ->will($this->returnSelf());
 
-        $this->ZbarDecoder = new \RobbieP\ZbarQrdecoder\ZbarDecoder([], $processBuilder);
-        $result = $this->ZbarDecoder->make(__DIR__.'/stubs/tc.jpg');
-        $this->assertEquals(__DIR__.'/stubs/tc.jpg', $this->ZbarDecoder->getFilePath());
+        $this->ZbarDecoder = new \RobbieP\ZbarQrdecoder\ZbarDecoder([], $process);
+        $result = $this->ZbarDecoder->make(__DIR__ . '/stubs/tc.jpg');
+        $this->assertEquals(__DIR__ . '/stubs/tc.jpg', $this->ZbarDecoder->getFilePath());
         $this->assertInstanceOf('RobbieP\ZbarQrdecoder\Result\ErrorResult', $result);
-        $this->assertEquals(400, $result->code);
-        $this->assertEquals('NOT_FOUND', $result->format);
-        $this->assertEquals('No barcode detected', $result->text);
+        $this->assertFalse($result->hasResult());
+        $this->assertEquals('NOT_FOUND', $result->getFormat());
+        $this->assertEquals('No barcode detected', $result->getText());
+
+        unset($process);
     }
-    
 }
- 
