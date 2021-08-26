@@ -5,7 +5,7 @@ namespace RobbieP\ZbarQrdecoder;
 use RobbieP\ZbarQrdecoder\Result\ErrorResult;
 use RobbieP\ZbarQrdecoder\Result\Result;
 use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\ProcessBuilder;
+use Symfony\Component\Process\Process;
 
 class ZbarDecoder {
 
@@ -33,7 +33,7 @@ class ZbarDecoder {
         if(isset($this->config['path'])) {
             $this->setPath($this->config['path']);
         }
-        $this->processBuilder =  is_null($processBuilder) ? new ProcessBuilder() : $processBuilder;
+       // $this->processBuilder = is_null($processBuilder) ? new Process() : $processBuilder;
     }
 
     /**
@@ -100,8 +100,12 @@ class ZbarDecoder {
     private function buildProcess()
     {
         $path = $this->getPath();
-        $this->processBuilder->setPrefix($path . DIRECTORY_SEPARATOR . static::EXECUTABLE);
-        $this->processBuilder->setArguments(array('-D', '--xml', '-q', $this->getFilepath()))->enableOutput();
+
+        $this->processBuilder = new Process(array('-D', '--xml', '-q')); //, $this->getFilepath()); //$path . DIRECTORY_SEPARATOR . static::EXECUTABLE);
+        $this->processBuilder->enableOutput();
+
+        //$this->processBuilder->setPrefix($path . DIRECTORY_SEPARATOR . static::EXECUTABLE);
+        //$this->processBuilder->setArguments(array('-D', '--xml', '-q', $this->getFilepath()))->enableOutput();
     }
 
     /**
@@ -110,9 +114,13 @@ class ZbarDecoder {
      */
     private function runProcess()
     {
-        $process = $this->processBuilder->getProcess();
+        $process = $this->processBuilder; //->getProcess();
+        
         try {
             $process->mustRun();
+
+            pre($process->getOutput());
+
             $this->result = new Result($process->getOutput());
         } catch (ProcessFailedException $e) {
             switch($e->getProcess()->getExitCode()) {
